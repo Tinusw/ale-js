@@ -2567,4 +2567,4 @@ function throttle(callback, limit) {
   };
 }
 
-document.addEventListener("scroll", throttle(explodeFunc, 1000));
+document.addEventListener("scroll", throttle(explodeFunc, 100));
