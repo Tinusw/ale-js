@@ -1,5 +1,5 @@
-let group = [];
-let groupnr = 0;
+group = [];
+groupnr = 0;
 
 group[groupnr] =
   `<g id="g` +
@@ -2474,15 +2474,13 @@ document.addEventListener("DOMContentLoaded", function () {
   allsvg.setAttribute("id", "allsvg");
 
   document.body.prepend(allsvg);
-  allsvg.style = {
-    width: "100%",
-    height: "100%",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    zIndex: 0,
-    transform: "scale(1)",
-  };
+  allsvg.style.width = "100%";
+  allsvg.style.height = "100%";
+  allsvg.style.position = "fixed";
+  allsvg.style.top = 0;
+  allsvg.style.left = 0;
+  allsvg.style.zIndex = 0;
+  allsvg.style.transform = "scale(1)";
 
   newsvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   newsvg.style.width = "100%";
@@ -2514,6 +2512,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   blocks = document.querySelectorAll("#allsvg path");
+  // for (i=0;i<blocks.length;i++){
+  // 	random1=(Math.floor(Math.random() * 40)-20)*4;
+  // 	random2=(Math.floor(Math.random() * 40)-20)*4;
+  // 	blocks[i].style.transform= 'translate('+random1+'px,'+random2+'px)';
+  // }
+  // allsvg.classList.add('exploded');
 });
 
 function boundcheck(w, h) {
@@ -2527,46 +2531,25 @@ function boundcheck(w, h) {
   return okok;
 }
 
-function functionThatMakesThingsExplode() {
-  console.log("scrollDetected");
-  const y = window.scrollY;
-  const allsvg = document.querySelector("#allsvg");
-  let blocks = document.querySelectorAll("#allsvg path");
-
-  if (y === 0 && allsvg.classList.contains("exploded")) {
-    for (let i = 0, len = blocks.length; i < len; i++) {
+document.addEventListener("scroll", function () {
+  var y = window.scrollY;
+  if (y == 0 && allsvg.classList.contains("exploded")) {
+    for (i = 0; i < blocks.length; i++) {
       blocks[i].style.transform = "unset";
+      allsvg.classList.remove("exploded");
     }
-    console.log(`${blocks} updated!`);
   } else if (y > 0 && !allsvg.classList.contains("exploded")) {
-    for (let i = 0, len = blocks.length; i < len; i++) {
-      const vf = Math.random();
-      const hf = Math.random();
-      const ff = Math.random();
-      const random1 = (Math.floor(vf * 100) - 50) * ff * 4;
-      const random2 = (Math.floor(hf * 100) - 50) * ff * 4;
-      blocks[i].style.transform = `translate(${random1}px, ${random2}px)`;
-      blocks[i].style.transition = `transform ${ff * 1.5}s ease`;
+    blocks = document.querySelectorAll("#allsvg path");
+    for (i = 0; i < blocks.length; i++) {
+      vf = Math.random();
+      hf = Math.random();
+      ff = Math.random();
+      random1 = (Math.floor(vf * 100) - 50) * ff * 4;
+      random2 = (Math.floor(hf * 100) - 50) * ff * 4;
+      blocks[i].style.transform =
+        "translate(" + random1 + "px," + random2 + "px)";
+      blocks[i].style.transition = "transform " + ff * 1.5 + "s ease";
     }
     allsvg.classList.add("exploded");
   }
-}
-
-function throttle(callback, limit) {
-  let wait = false;
-  return function (...args) {
-    if (!wait) {
-      callback(...args);
-      wait = true;
-      setTimeout(() => {
-        wait = false;
-      }, limit);
-    }
-  };
-}
-
-document.addEventListener(
-  "scroll",
-  // the explode function will only run once every 1000 milliseconds
-  throttle(functionThatMakesThingsExplode, 1000)
-);
+});
